@@ -15,6 +15,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -151,7 +152,7 @@ public class MigrationHelper {
 			user.setDateChanged(parseDate(e.getAttribute("date_changed")));
 			
 			// Generate a temporary password: 8-12 random characters
-			String pass;
+			StringBuffer pass;
 			{
 				int length = rand.nextInt(4) + 8;
 				char[] password = new char[length];
@@ -159,9 +160,11 @@ public class MigrationHelper {
 					int randDecimalAsciiVal = rand.nextInt(93) + 33;
 					password[x] = (char) randDecimalAsciiVal;
 				}
-				pass = new String(password);
+				pass = new StringBuffer(new String(password));
+				Arrays.fill(password, ' ');
 			}
-			us.createUser(user, pass);
+			us.createUser(user, pass.toString());
+			pass.setLength(0);
 			++ret;
 		}
 		return ret;
