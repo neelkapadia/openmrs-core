@@ -525,7 +525,7 @@ public final class OpenmrsConstants {
 	 */
 	public static final String ENCRYPTION_CIPHER_CONFIGURATION = "AES/CBC/PKCS5Padding";
 	
-	public static final String ENCRYPTION_KEY_SPEC = "AES";
+	public static final String ENCRYPTION_KEY_SPEC = getOpenmrsProperty("openmrs.encryption.keyspec");
 	
 	public static final String ENCRYPTION_VECTOR_RUNTIME_PROPERTY = "encryption.vector";
 	
