@@ -19,6 +19,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Future;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
@@ -315,7 +317,16 @@ public class Context {
 	 * @should change locale when become another user
 	 */
 	public static void becomeUser(String systemId) throws ContextAuthenticationException {
-		log.info("systemId: {}", systemId);
+
+		String whitelist = "[a-z0-9]+";
+		Pattern pattern = Pattern.compile(whitelist);
+		Matcher matcher = pattern.matcher(systemId);
+		if (matcher.find()) {
+			log.info("systemId: {}", systemId);
+		}
+		else {
+			log.warn("Unexpected value of systemId. Potential attack, please check");
+		}
 
 		User user = getUserContext().becomeUser(systemId);
 
