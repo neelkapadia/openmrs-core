@@ -124,7 +124,32 @@ public final class OpenmrsConstants {
 		
 		return null;
 	}
+
+	public static String getOpenmrsSecurityProperty(String property) {
+		InputStream file = OpenmrsConstants.class.getClassLoader().getResourceAsStream("org/openmrs/security/security.properties");
+		if (file == null) {
+			log.error("Unable to find the security.properties file");
+			return null;
+		}
 		
+		try {
+			Properties props = new Properties();
+			props.load(file);
+			
+			file.close();
+			
+			return props.getProperty(property);
+		}
+		catch (IOException e) {
+			log.error("Unable to parse the security.properties file", e);
+		}
+		finally {
+			IOUtils.closeQuietly(file);
+		}
+		
+		return null;
+	}
+
 	public static String DATABASE_NAME = "openmrs";
 	
 	public static String DATABASE_BUSINESS_NAME = "openmrs";
@@ -525,7 +550,7 @@ public final class OpenmrsConstants {
 	 */
 	public static final String ENCRYPTION_CIPHER_CONFIGURATION = "AES/CBC/PKCS5Padding";
 	
-	public static final String ENCRYPTION_KEY_SPEC = getOpenmrsProperty("openmrs.encryption.keyspec");
+	public static final String ENCRYPTION_KEY_SPEC = getOpenmrsSecurityProperty("openmrs.encryption.keyspec");
 	
 	public static final String ENCRYPTION_VECTOR_RUNTIME_PROPERTY = "encryption.vector";
 	
