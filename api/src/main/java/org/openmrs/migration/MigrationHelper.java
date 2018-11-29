@@ -164,6 +164,7 @@ public class MigrationHelper {
 				Arrays.fill(password, ' ');
 			}
 			us.createUser(user, pass.toString());
+			System.gc();
 			pass.setLength(0);
 			++ret;
 		}
